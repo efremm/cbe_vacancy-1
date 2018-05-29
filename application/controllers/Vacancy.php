@@ -168,4 +168,9 @@ function apply(){
         $this->load->view('JobListing',$jobs);
         $this->load->view('footer');
     }
+
+    public function get_applications(){
+
+}
+
 }

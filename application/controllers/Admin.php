@@ -79,5 +79,13 @@ class Admin extends CI_Controller
        $this->load->view('header',$data);
        $this->load->view('Admin/report');
    }
+  public function screening(){
+ $data = array(
+           'page_title' => 'screen applicants'
+       );
+       $this->load->view('header',$data);
+      $home_data['vacancies']=$this->Vacancy_model->get_applications();
+       $this->load->view('Admin/screening',$home_data);
+   }
 
 }

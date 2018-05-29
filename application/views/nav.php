@@ -20,7 +20,7 @@
                     <li class="link"><a href="<?php echo base_url()?>"> <span class="fa fa-1x fa-home"> </span> <strong>Home</strong> </a></li>
 
 
-                    <li link title="recent job listings"><a href="<?php echo base_url()?>vacancy/jobListing"><span class="fa fa-briefcase"></span>  <strong> Filter Jobs</strong>  </a></li>
+                    <li link title="recent job listings"><a href="<?php echo base_url()?>vacancy/jobListing"><span class="fa fa-search"></span>  <strong> Search Jobs</strong>  </a></li>
 
                     <li title="Frequently asked questions"><a href="<?php echo base_url()?>combankEth/faq"> <strong><span class="fa  fa-question-circle"></span> FAQ</strong> </a></li>
                      <li title="Contact us"><a href="<?php echo base_url()?>combankEth/contact_us"> <strong><span class="fa  fa-phone-square"></span>  contact us </strong> </a></li>

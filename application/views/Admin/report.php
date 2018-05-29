@@ -1,8 +1,8 @@
 
-<div class="container-fluid" style="margin-top:2px">
+<div class="row" style="margin-top:2px">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h2>Afromed institute of public health</h2> </div>
+            <h2 class="text-center">commercial Bank of Ethiopia vacancy portal</h2> </div> </div>
 
     </div>
     <div class="col-lg-12">

@@ -1,9 +1,36 @@
 <div class="container">
-
     <div class="row">
 
-        <div class="col-lg-7">
-            <div class="page-header">Commercial Bank of Ethiopia would like to invite qualified and interested candidates for the following Positions</div>
+        <div class="col-lg-12">
+            <form action="" class="form-group">
+                <div class="form-group col-lg-4">
+                    <label for="catagory">Job category</label>
+                    <select class="form-control" name="category">
+                        <option> choose job catagory</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="catagory">vacancy type</label>
+                    <select class="form-control" name="category">
+                        <option> Permanent</option>
+                        <option> contract</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="catagory">Date posted</label>
+                    <select class="form-control" name="category">
+                        <option> Ascending</option>
+                        <option> Descending</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-9">
+            <div class="text-muted"><strong>Commercial Bank of Ethiopia would like to invite qualified and
+                    interested candidates for the following Positions</strong> <hr> </div>
             <?php
             foreach ($vacancies as $vacancy){
                 echo '<p class="">Job Title: '.$vacancy->job_title .'</p>';
@@ -24,7 +51,7 @@
         </div>
         <div class="col-lg-3">
            <ul class="list-item">
-               <li class="list-group-item active" style="border: none">Filter Jobs</li>
+               <li class="list-group-item " style="border: none"><strong> <span class="text-success fa fa-filter"></span> <span class="text-info">Filter Jobs</span> </strong> </li>
                <li class="list-group-item " style="border: none">Filter by Date</li>
                <li class="list-group-item " style="border: none">By date Posted</li>
                <li class="list-group-item " style="border: none">By vacancy type</li>
