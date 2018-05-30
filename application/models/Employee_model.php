@@ -55,4 +55,8 @@ public function create_acount($data){
         return  $this->db->get('tbl_users')->result();
 
     }
+    function username_exists($username){
+        $this->db->where('Username',$username);
+        return  $this->db->get('tbl_users')->result();
+    }
 }

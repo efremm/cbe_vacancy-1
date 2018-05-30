@@ -80,27 +80,34 @@ class Employee extends CI_Controller
         $options=['cost'=>12];
         $encrypted_pass=password_hash($password,PASSWORD_BCRYPT,$options);
 
-$user_data=array(
-    'Staff_ID'=>$staffid,
-    'Username'=>$username,
-    'password'=>$encrypted_pass
-);
-//check if exists
+        $user_data=array(
+            'Staff_ID'=>$staffid,
+            'Username'=>$username,
+            'password'=>$encrypted_pass
+        );
+      //check if exists
         $exists=$this->Employee_model->user_exists($staffid);
         if($exists){
             $this->session->set_flashdata('msg','<p class="alert alert-danger">User already exists</p>');
             redirect(base_url('employee/createUser'));
         }else{
-            $created=$this->Employee_model->create_acount($user_data);
-            if ($created){
-                $this->session->set_flashdata('msg','<p class="alert alert-success">User successfully created</p>');
+
+            $nameexists=$this->Employee_model->username_exists($username);
+            if($nameexists){
+                $this->session->set_flashdata('msg','<p class="alert alert-danger">Username already exists</p>');
                 redirect(base_url('employee/createUser'));
-            }else{
-                $this->session->set_flashdata('msg','<p class="alert alert-danger">User not created</p>');
-                redirect(base_url('employee/createUser'));
+            }else {
+
+                $created = $this->Employee_model->create_acount($user_data);
+                if ($created) {
+                    $this->session->set_flashdata('msg', '<p class="alert alert-success">User successfully created</p>');
+                    redirect(base_url('employee/createUser'));
+                } else {
+                    $this->session->set_flashdata('msg', '<p class="alert alert-danger">User not created</p>');
+                    redirect(base_url('employee/createUser'));
+                }
+
             }
-
-
         }
 
 

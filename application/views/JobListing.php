@@ -38,6 +38,8 @@
                 echo '<p>Minimum salary: '.$vacancy->minumum_salary.' Birr</p>';
                 echo '<p>maximum salary: '.$vacancy->Maximum_salary.' Birr</p>';
                 echo '<p>Employement: '.$vacancy->vacancy_type.' </p>';
+                echo '<p>number_of_positions '.$vacancy->number_of_positions.' </p>';
+
                 echo '<p>Maximum age: '.$vacancy->maximum_age.' year<small>
                       <span class="text-muted text-warning">(Applicants Aged more than 35 are  no more wanted)</span> </small></p>';
                 echo  "<a href='".base_url()."vacancy/viewdetails/".$vacancy->vacancy_id."' class=' btn  btn-sm '><strong> <span class='fa fa-1x fa-eye'></span> view details</strong></a><br>";

@@ -26,12 +26,12 @@
                 echo form_open('Admin/authenicate',$attrib);
                 ?>
                 <div class="form-group ">
-                    <label for="usrename">user name</label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                    <label for="usrename"><span class="fa fa-user"></span> user name</label>
+                    <input required type="text" class="form-control" name="username" id="username" placeholder=" Enter username">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Enter Password">
+                    <label for="password"><span class="fa fa-lock"></span> Password</label>
+                    <input required type="password" class="form-control" name="password" id="password" placeholder="Enter Password">
                 </div>
                 <button type="submit" class="btn btn-primary pull-right">Login </button>
             </form>

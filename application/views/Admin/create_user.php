@@ -31,10 +31,10 @@
                             <?php
                        echo $this->session->flashdata('msg');
                             ?>
-                            <form action="<?php echo base_url()?>/employee/SaveUser" class="form-group" method="post">
+                            <form id="user_account_form" action="<?php echo base_url()?>/employee/SaveUser" class="form-group" method="post">
                                 <div class="form-group col-lg-6">
                                     <label for="staffid">choose staff member</label>
-                                    <select  id="staffid" class="form-control" name="staffid">
+                                    <select  id="staffid" class="form-control" name="staffid" required>
                                         <option value="">choose staff id</option>
                                         <?php
                                         foreach ($staffs as $staff)
@@ -50,12 +50,12 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label for="password">password</label>
-                                    <input name="password" id="password" class="form-control"/>
+                                    <input type="password" name="password" id="password" class="form-control"/>
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="cpassword">confirm password</label>
-                                    <input name="cpassword" id="cpassword" class="form-control"/>
+                                    <input type="password" name="cpassword" id="cpassword" class="form-control"/>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <input type="submit" class="btn btn-primary" value="Save data">
@@ -81,3 +81,43 @@
 
 </div>
 
+<style type="text/css">
+    .error{
+        color: red;
+        font-size: small;
+    }
+</style>
+<script src="<?php echo base_url()?>resources/js/jquery-1.10.2.js"></script>
+<script src="<?php echo base_url()?>resources/js/jquery.validate.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#user_account_form').validate({ // initialize the plugin
+            rules: {
+                staffid:{
+                    required: true,
+
+                },
+                username:{
+                    required:true
+                },
+                password:{
+                    required:true
+                },
+                cpassword:{
+                    required:true,
+                    equalTo: "#password"
+
+                }
+
+
+
+            }
+        });
+
+    });
+
+
+
+</script>

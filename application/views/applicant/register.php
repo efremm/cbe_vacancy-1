@@ -50,6 +50,10 @@
                 <label for="address">Mobile</label>
                 <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="mobile number">
             </div>
+            <div class="form-group col-lg-6">
+                <label for="address">Email</label>
+                <input type="email" class="form-control" id="Emal" name="email" placeholder="Email Address">
+            </div>
 
 
             <div class="form-group">
@@ -187,8 +191,6 @@
             <?php
             echo form_close();
             ?>
-
-            </form>
             <?php
         }
         ?>
@@ -334,7 +336,15 @@
             </div>
             <div class="form-group col-lg-6">
                 <label for="position">position</label>
-                <input name="position"  id="position" type="text" class="form-control">
+                <select name="position"  id="position"  class="form-control">
+                    <option value="">choose area of study</option>
+                    <?php
+                    foreach ($categories as $catagory)
+                    {
+                        echo "<option value=".$catagory->Job_catagory_id.">".$catagory->catagory_name."</option>";
+                    }
+                        ?>
+                </select>
             </div>
             <div class="form-group col-lg-6">
                 <label for="position">from</label>
@@ -450,15 +460,50 @@
             <?php
             }
             ?>
-
-
         <div class="page-header">Cv and Resumen</div>
+
+        <?php
+        echo  "<p class='text-warning'>".$this->session->userdata('cv')."</p>";
+
+
+        if(empty($this->session->userdata('cv'))){
+            foreach ($cv as $pic)
+            {
+               // echo '<img alt="profile pic" class=" img img-thumbnail" src="'.base_url()."uploads/".$pic->picture.'">';
+
+                echo form_open_multipart('Applicant/uploadcv');
+                ?>
+                <div class="form-group">
+                    <input type="file" name="file" size="20"/>
+                </div>
+
+                <input class="btn btn-primary" type="submit" value="upload new cv"/>
+
+                </form>
+            <?php }
+        }else {
+
+            echo form_open_multipart('Applicant/saveprofilepicture'); ?>
+            <div class="form-group">
+                <input type="file" name="file" size="20"/>
+            </div>
+
+            <input class="btn btn-primary" type="submit" value="upload"/>
+
+            </form>
+            <?php
+        }
+        ?>
+
+
+
+
         </div>
 
     </div>
 </div>
 
-<link rel="stylesheet" href="<?php echo base_url()?>/resources/jquery/jquery-ui/css/jquery-ui.min.css">
+<link rel="stylesheet" href="<?php echo base_url()?>resources/jquery/jquery-ui/css/jquery-ui.min.css">
 <script type="text/javascript" src="<?php echo base_url()?>resources/js/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>resources/jquery/jquery-ui/js/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo site_url()?>resources/bootstrap/js/bootstrap.js"></script>

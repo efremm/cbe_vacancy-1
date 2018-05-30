@@ -29,6 +29,33 @@ public function getJobDetails($id){
     $query=$this->db->get('tbl_vacancy');
     return $query->result();
 }
+public function get_applications(){
+    $this->db->select('
+             tbl_applications.Applicant_id,
+                tbl_vacancy.job_title,
+                tbl_vacancy.vacancy_id,
+                   tbl_vacancy.Job_posted,
+                      tbl_vacancy.Due_date,
+              count(tbl_applications.Applicant_id) as totalapplications,
+              
+          ');
+    $this->db->from('tbl_applications');
+    $this->db->join('tbl_vacancy', 'tbl_applications.vacancy_id = tbl_vacancy.vacancy_id');
+    $this->db->where('tbl_vacancy.vacancy_id=tbl_applications.vacancy_id');
+    $this->db->group_by('tbl_vacancy.vacancy_id');
+    $query = $this->db->get();
+    return $query->result();
+   }
+   public function get_applicants($vacancy_id){
+            $this->db->select('*');
+            $this->db->where('tbl_applications.vacancy_id',$vacancy_id);
+            $this->db->from('tbl_applications');
+            $this->db->join('tbl_applicant', 'tbl_applicant.Applicant_id = tbl_applications.Applicant_id');
+
+            $this->db->group_by('tbl_applications.vacancy_id');
+            $query=$this->db->get();
+       return $query->result();
+   }
 
     function display_jobs()
     {
@@ -36,15 +63,15 @@ public function getJobDetails($id){
         $query=$this->db->get('tbl_vacancy');
         return $query->result();
     }
-    function tech_jobs()
+   function tech_jobs()
     {
 
 //$key=$_POST['key'];
 
-        $this->db->where("catagory",1);
+        $this->db->where("Job_catagory_id",1);
         $this->db->where("current_state",'active');
         $this->db->order_by('Job_posted', 'DESC');
-        $query=$this->db->get('vacancy');
+        $query=$this->db->get('tbl_vacancy');
         return $query->result();
     }
     function management_jobs()

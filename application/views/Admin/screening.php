@@ -26,20 +26,31 @@
            <thead>
            <th>#</th>
            <th>vacancy title</th>
+           <th>Totall applicants</th>
            <th>Date posted</th>
            <th>Due Date</th>
            <th>Action</th>
            </thead>
            <tbody>
            <?php
+           $counter=1;
            foreach ($vacancies as $vacancy){
                echo "<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>";
+             <td>".$counter."</td>
+                
+                <td>".$vacancy->job_title."</td>
+               <td>".$vacancy->totalapplications."</td>
+                <td>".$vacancy->Job_posted."</td>
+                <td>".$vacancy->Due_date."</td>
+                 <td>
+                 <form action=".base_url()."Admin/process_screening method='post'>
+                 <input type='hidden' name='vacancy_id' value='".$vacancy->vacancy_id."'> 
+                  <button class='btn btn-info  btn-sm' id='process'>Process screening</button></td>
+                  </form>";
+                
+               $counter++;
            }
+
            ?>
            </tbody>
 

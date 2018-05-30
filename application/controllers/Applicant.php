@@ -24,7 +24,7 @@ function __construct()
 function index(){
 
     $data = array(
-        'page_title' => 'Applicant-index'
+        'page_title' => 'Applicant-Home'
     );
 
     if(!empty($this->session->userdata('Id')))
@@ -37,7 +37,7 @@ function index(){
         $profile_data['workexperience']=$this->Applicant_model->get_work_experience($id);
         $profile_data['picture']=$this->Applicant_model->get_picture($id);
         $profile_data['account']=$this->Applicant_model->get_useraccont($id);
-
+        $profile_data['cv']=$this->Applicant_model->get_cv($id);
         $profile_data['address']=$this->Applicant_model->get_address($id);
 
         $address_data = $this->Applicant_model->get_address($id);
@@ -88,6 +88,49 @@ function index(){
         $this->load->view('footer');
 
      }
+     public function uploadcv(){
+         $config['upload_path']          = './uploads/cv';
+         $config['allowed_types']        = 'doc|pdf|jpeg|png';
+         $config['max_size']             = 100;
+         $config['max_width']            = 1024;
+         $config['max_height']           = 768;
+
+         $this->load->library('upload', $config);
+         $userid=$this->session->userdata('Id');
+         if(!empty($userid)){
+             if ( ! $this->upload->do_upload('file'))
+             {
+                 $error = array('error' => $this->upload->display_errors());
+                 $error=json_encode($error);
+
+                 $this->session->set_flashdata("cv",$error);
+                 redirect(base_url('applicant/register'));
+             }
+             else
+             {
+                 $userid=$this->session->userdata('Id');
+                 $image_date  =$this->upload->data();
+                 $data = array('upload_data' =>$image_date);
+                 $file_array = $this->upload->data('file_name');
+                 $profile['profile_picture'] = $file_array['file_name'];
+
+                 $picsaved=$this->Applicant_model->pic_upload($userid,$file_array);
+
+                 $data=json_encode($data);
+                 $this->session->set_userdata('picture',$file_array);
+
+                 $this->session->set_flashdata("picmsg","profile picture successfully uploaded");
+                 redirect(base_url('applicant/register'));
+             }
+         }else{
+             $this->session->set_flashdata("picmsg","<p class='text-danger'>your id is undefined!. please fill your personal info first</p>");
+             redirect(base_url('applicant/register'));
+         }
+
+
+
+     }
+
      function authenticate(){
        $username= $_POST['username'];
        $password= $_POST['password'];
@@ -135,10 +178,14 @@ function index(){
         $id = $this->session->userdata('Id');
         $profile_data['info'] = $this->Applicant_model->get_profile($id);
         $profile_data['regions'] = $this->Region_model->get_regions();
+
+        $profile_data['categories'] = $this->Vacancy_model->list_job_catagories();
+
         $profile_data['education'] = $this->Applicant_model->get_educational_info($id);
         $profile_data['workexperience'] = $this->Applicant_model->get_work_experience($id);
         $profile_data['picture'] = $this->Applicant_model->get_picture($id);
         $profile_data['account'] = $this->Applicant_model->get_useraccont($id);
+        $profile_data['cv'] = $this->Applicant_model->get_cv($id);
 
         $profile_data['address'] = $this->Applicant_model->get_address($id);
         if(!empty($this->session->userdata('Id'))) {
@@ -207,29 +254,51 @@ function do_register(){
            $mobile=$_POST['mobile'];
            $gender=$_POST['gender'];
            $dob=$_POST['dob'];
+           $email=$_POST['email'];
+// check email if registered
+           $check_mail=$this->Applicant_model->check_mail_exists($email);
+            if($check_mail){
+                $this->session->set_flashdata("msg","<p class='alert alert-dismissable alert-danger'>Email already exists '</p>'");
 
-           // arrange for database insertion
-           $profile=array(
-               "FirstName"=>$fname,
-               "MiddleName"=>$mname,
-               "LastName"=>$lname,
-               "Mobile"=>$mobile,
-               "Gender"=>$gender,
-               "DOB"=>$dob
-           );
-           // pass data to database as parametre
-           $saved=$this->Applicant_model->register_profile($profile);
+                redirect(base_url('applicant/register'));
+            }
+            else
+            {
+                $check_mobile=$this->Applicant_model->check_mobile_exists($mobile);
+                if($check_mobile){
+                    $this->session->set_flashdata("msg","<p class='alert alert-dismissable alert-danger'>Mobile number already exists '</p>'");
 
-           if($saved==true){
-               $id= json_encode($saved);
-               $this->session->set_flashdata("msg","<p class='alert alert-dismissable alert-success'>profile successfully saved and your Id is ".$id.'</p>');
-               $this->session->set_userdata("Id",$id);
-               redirect(base_url('applicant/register'));
-           }else
-               {
-               $this->session->set_flashdata("msg","profile not saved");
-               redirect(base_url('applicant/register'));
-           }
+                    redirect(base_url('applicant/register'));
+                }else
+                    {
+                        // arrange for database insertion
+                        $profile=array(
+                            "FirstName"=>$fname,
+                            "MiddleName"=>$mname,
+                            "LastName"=>$lname,
+                            "Mobile"=>$mobile,
+                            "Gender"=>$gender,
+                            "DOB"=>$dob,
+                            "email"=>$email
+
+                        );
+                        // pass data to database as parametre
+                        $saved=$this->Applicant_model->register_profile($profile);
+
+                        if($saved==true){
+                            $id= json_encode($saved);
+                            $this->session->set_flashdata("msg","<p class='alert alert-dismissable alert-success'>profile successfully saved and your Id is ".$id.'</p>');
+                            $this->session->set_userdata("Id",$id);
+                            redirect(base_url('applicant/register'));
+                        }else
+                        {
+                            $this->session->set_flashdata("msg","profile not saved");
+                            redirect(base_url('applicant/register'));
+                        }
+
+                }
+            }
+
        }
 
 
@@ -393,11 +462,6 @@ if(!empty($userid)){
     /**
      * add work experinece form
      */
-    public function AddExperience(){
-
-
-    }
-
     /**
      * view vacancy applications
      */
@@ -433,10 +497,14 @@ if(!empty($userid)){
             $username = $_POST['username'];
             $password = $_POST['password'];
             $today = date('yy-mm-dd');
+                $options=['cost'=>12];
+                $encrypted_pass=password_hash($password,PASSWORD_BCRYPT,$options);
+
+
             $account_data = array(
                 'Applicant_id' => $userid,
                 "username" => $username,
-                "password" => $password,
+                "password" => $encrypted_pass,
                 "date_inserted" => $today
             );
             $created = $this->Applicant_model->create_account($account_data);

@@ -19,6 +19,16 @@ class Applicant_model extends CI_Model
         return $count;
        }
 
+       public function check_mail_exists($email){
+        $this->db->where('email',$email);
+        return $this->db->get('tbl_applicant')->result();
+       }
+    public function check_mobile_exists($number){
+        $this->db->where('email',$number);
+        return $this->db->get('tbl_applicant')->result();
+    }
+
+
     function display_applications($applicant_id){
 
         $this->db->where('Applicant_id',$applicant_id);
@@ -81,8 +91,19 @@ class Applicant_model extends CI_Model
         $this->db->where('Applicant_id',$id);
       return  $this->db->update('tbl_applicant');
     }
+    function cv_upload($id, $pic){
+        $this->db->set('picture', $pic);
+        $this->db->where('Applicant_id',$id);
+        return  $this->db->update('tbl_applicant');
+    }
     function get_picture($id){
         $this->db->Select('picture');
+        $this->db->where('Applicant_id',$id);
+        $query=$this->db->get('tbl_applicant');
+        return $query->result();
+    }
+    function get_cv($id){
+        $this->db->Select('cv');
         $this->db->where('Applicant_id',$id);
         $query=$this->db->get('tbl_applicant');
         return $query->result();
@@ -98,10 +119,20 @@ class Applicant_model extends CI_Model
         return $query->result();
     }
     public function check_user($username,$password){
+
         $this->db->where('username',$username);
-        $this->db->where('password',$password);
-        $query=$this->db->get('tbl_applicant_user_account');
-        return $query->result();
+        //$this->db->where('password',$password);
+        $this->db->where('Account_status','Active');
+        $result=$this->db->get('tbl_applicant_user_account');
+        $dbpassword=$result->row(3)->password;
+
+        if(password_verify($password,$dbpassword)){
+            return $result->result();
+
+        }else{
+            return false;
+        }
+
     }
 
 }

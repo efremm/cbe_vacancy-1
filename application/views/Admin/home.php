@@ -6,35 +6,60 @@
 
         </div>
 
-        <div class="col-lg-3 " style="margin-top: -15px">
+        <div class="col-lg-3">
             <?php
             $this->load->view('Admin/sidebar');
             ?>
 
         </div>
-        <div class="col-lg-9" id="content" style="margin-top: -18px">
-            <div class="page-header"><h4 class="text-muted">Administrator dashborad</h4></div>
+        <div class="col-lg-9 " id="content" >
             <div class="row">
-                <div class="col-lg-8">
-                    <h4 class="text-info"><span class="fa fa-user"></span> Staff members reports</h4>
-                    <table id="staffinfo" class="table table-responsive table-striped">
+                <div class="col-lg-4 " >
+
+                    <h4 class="text-success">
+                        <span class="fa fa-2x fa-briefcase"></span>   Vacancies
+                    </h4>
+
+                     </div>
+                <div class="col-lg-4 ">
+
+                    <h4 class="text-success">
+                        <span class=" fa fa-2x glyphicon glyphicon-user"></span>  Staff members</h4>
+                   </div>
+                <div class="col-lg-4 ">
+                    <h4 class="text-success">
+                        <span class="fa fa-2x fa-users"></span>
+                        <?php
+                    echo json_encode($activemembers);
+                    ?> Applicants</h4></div>
+            </div>
+
+                    <h4 class="well well-sm">Administrator dashborad/ Staff members reports</h4>
+                    <table id="staffinfo" class="table table-responsive ">
                <thead>
-                   <th>#</th>
-                    <th>Full name</th>
-                     <th>Gender</th>
-                      <th>Age</th>
-                       <th>Hire date</th>
+                   <th >#</th>
+                    <th >Full name</th>
+                     <th >Gender</th>
+                      <th >Age</th>
+                       <th >Hire date</th>
                </thead> 
                     <tbody>
                         <?php 
 $no=1;
                         foreach ($staffs as $Staff) {
+                            $birthdate=$Staff->birth_date;
+                            $bdadate=new DateTime($birthdate);
+                            $now = new DateTime();
+                            $diff=date_diff($now,$bdadate);//OP: +272 days
+
+                            $Longage= $diff->format('%y years %m months %d days ');
+                            $age= $diff->format('%y');
                             $fullname=$Staff->FirstName." ".$Staff->MiddleName." ".$Staff->LastName;
                              echo "<tr>
                              <td>".$no."</td>
                              <td>".$fullname."</td>
                               <td>".$Staff->Gender."</td>
-                              <td></td>
+                              <td>".$age."</td>
                               <td>".$Staff->hire_date."</td>
  
                              </tr>";
@@ -42,30 +67,18 @@ $no=1;
                          } ?>
                     </tbody>
                 </table>
-                </div>
-                <div class="col-lg-4 ">
-                    
-                    <span class=" text-info fa  fa-4x fa-graduation-cap"> <?php
-                  echo json_encode($activemembers);
-                  ?> </span> 
-                 <h3 class="text-info">
-                  </span>  <span class="text-success">
-                  Registed job seekers </span> </h3>
-              
-                </div>
 
-            </div>
-            <hr>
             <div class="row">
                 <div class="col-lg-12">
-                <table class="table table-responsive">
+                    <h4 class="well well-sm">Staff members reports</h4>
+                <table class="table table-responsive ">
                <thead>
-                   <th>#</th>
-                    <th>Title</th>
-                     <th>Date posted</th>
-                     <th>Due Date </th>
-                       <th># of applicants</th>
-                      <th>Actions</th>
+                   <th >#</th>
+                    <th >Title</th>
+                     <th >Date posted</th>
+                     <th >Due Date </th>
+                       <th >No. of applicants</th>
+                      <th >Actions</th>
                </thead> 
                <tbody>
                <?php
@@ -77,11 +90,12 @@ $no=1;
                         <td>".$vacancy->job_title."</td>
                          <td>".$vacancy->Job_posted."</td>
                        <td>".$vacancy->Due_date."</td>
-                      <td>".$vacancy->job_title."</td>
+                      <td>".$vacancy->totalapplications."</td>
                         <td><select id='action' class='form-control'>
                         <option>choose action</option>
                           <option>set inactive</option>
                           <option>Edit vacancy</option>
+                           <option>do screening</option>
                         </select>
                         </td>
 
@@ -97,5 +111,16 @@ $no=1;
             </div>
         </div>
     </div>
-</div>
+<link rel="stylesheet" href="<?php echo base_url()?>/resources/jquery/jquery-ui/css/jquery-ui.css">
+<link rel="stylesheet" href="<?php echo base_url()?>/resources/DataTable/css/jquery.dataTables.css">
+<script src="<?php echo base_url()?>/resources/js/jquery-1.10.2.js"></script>
+<script src="<?php echo base_url()?>/resources/jquery/jquery-ui/js/jquery-ui.min.js"></script>
+<script src="<?php echo base_url()?>/resources/DataTable/js/jquery.dataTables.js"></script>
+<script>
+var element=document.getElementsByTagName('table');
+var select=document.getElementsByTagName('select');
+$(element).dataTable();
+$(select).css('class','form-control');
+</script>
+
 

@@ -26,6 +26,7 @@ class Admin extends CI_Controller
         );
         $this->load->view('header',$data);
       $this->load->view('Admin/login');
+        $this->load->view('footer');
     }
 
     /**
@@ -57,9 +58,10 @@ class Admin extends CI_Controller
        );
        $this->load->view('header',$data);
        $home_data['staffs']=$this->Employee_model->get_employes();
-       
-       $home_data['vacancies']=$this->Vacancy_model->display_jobs();
+      $home_data['vacancies']=$this->Vacancy_model->get_applications();
+      // $home_data['vacancies']=$this->Vacancy_model->display_jobs();
        $home_data['activemembers']=$this->Applicant_model->get_all_applicants();
+
        $this->load->view('Admin/home',$home_data);
         $this->load->view('footer');
    }
@@ -80,12 +82,42 @@ class Admin extends CI_Controller
        $this->load->view('Admin/report');
    }
   public function screening(){
- $data = array(
+         $data = array(
            'page_title' => 'screen applicants'
-       );
+                 );
        $this->load->view('header',$data);
       $home_data['vacancies']=$this->Vacancy_model->get_applications();
        $this->load->view('Admin/screening',$home_data);
+   }
+   function sendSms(){
+       $data = array(
+           'page_title' => 'Send SMS'
+       );
+       $this->load->view('header',$data);
+       $this->load->view('Admin/sendSms');
+   }
+   public function process_screening($vacancy_id=null){
+       $data = array(
+           'page_title' => 'Process screening'
+       );
+       $this->load->view('header',$data);
+       $vacancy_id=$_POST['vacancy_id'];
+      $applications['applicants']=$this->Vacancy_model->get_applicants($vacancy_id);
+
+       $this->load->view('Admin/process_screening',$applications);
+    }
+    function sendMail(){
+        $data = array(
+            'page_title' => 'Send Mail'
+        );
+        $this->load->view('header',$data);
+        $this->load->view('Admin/sendMail');
+
+    }
+
+   public function logout(){
+      $this->session->unset_userdata('admin');
+      redirect(base_url('admin'));
    }
 
 }

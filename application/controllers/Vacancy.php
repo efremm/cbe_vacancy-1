@@ -17,15 +17,7 @@ class Vacancy extends CI_Controller
          $this->load->helper('form','date');
          $this->load->library('session');
     }
-    public function get_spec($id){
-      $spec= $this->Vacancy_model->get_specializations($id);
-     // echo json_encode($spec);
-        foreach ($spec as $speciality)
-        {
-            echo "<option value='".$speciality->specialization_id."'>".$speciality->specialization_name."</option>";
-        }
 
-         }
     function index(){
         $department['dept']= $this->Department_model->departments();
         $data = array(
@@ -38,15 +30,29 @@ class Vacancy extends CI_Controller
          $this->load->view('Vacancy',$department);
         $this->load->view('footer');
     }
-    function post(){
-        $data = array(
-            'page_title' => 'post-vacancy'
-        );
-        $vacancy_data['category']=$this->Vacancy_model->getCatagories();
-        $vacancy_data['qualifications']=$this->Vacancy_model->getqualifications();
-        $this->load->view('header',$data);
-        $this->load->view('Admin/postvacancy',$vacancy_data);
+    public function get_spec($id){
+        $spec= $this->Vacancy_model->get_specializations($id);
+        // echo json_encode($spec);
+        foreach ($spec as $speciality)
+        {
+            echo "<option value='".$speciality->specialization_id."'>".$speciality->specialization_name."</option>";
+        }
 
+    }
+    function post(){
+        if (empty($this->session->userdata('admin'))){
+            redirect(base_url('admin'));
+        }
+
+    else{
+            $data = array(
+                'page_title' => 'post-vacancy'
+            );
+            $vacancy_data['category']=$this->Vacancy_model->getCatagories();
+            $vacancy_data['qualifications']=$this->Vacancy_model->getqualifications();
+            $this->load->view('header',$data);
+            $this->load->view('Admin/postvacancy',$vacancy_data);
+    }
     }
     function do_post(){
         $tile=$_POST['title'];
@@ -172,5 +178,15 @@ function apply(){
     public function get_applications(){
 
 }
+
+ function tech_jobs()
+    {
+
+
+        $data=$this->Vacancy_model->tech_jobs();
+       echo json_encode($data);
+
+
+    }
 
 }
