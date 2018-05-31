@@ -71,3 +71,4 @@ You must update files manually if files in `application` folder or `index.php` c
 * [Translations for CodeIgniter System](https://github.com/bcit-ci/codeigniter3-translations)
 # vacancy
 # cbe.github.io
+# cbe_vacancy
