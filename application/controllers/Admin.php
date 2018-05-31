@@ -14,7 +14,7 @@ class Admin extends CI_Controller
         parent::__construct();
         $this->load->helper('form');
         $this->load->model('AdminModel');
-        
+        $this->load->helper('email');
         $this->load->model('Employee_model');
         $this->load->model('Vacancy_model');
         $this->load->model('Applicant_model');
@@ -72,6 +72,8 @@ class Admin extends CI_Controller
        $this->load->view('header',$data);
        $this->load->view('Admin/createuser');
    }
+  
+   
 
 
    public function reports(){
@@ -102,7 +104,11 @@ class Admin extends CI_Controller
        );
        $this->load->view('header',$data);
        $vacancy_id=$_POST['vacancy_id'];
+       $seat=$_POST['seat'];
+
+
       $applications['applicants']=$this->Vacancy_model->get_applicants($vacancy_id);
+       $applications['vacancydetail']=$this->Vacancy_model->get_job_details($vacancy_id);
 
        $this->load->view('Admin/process_screening',$applications);
     }
@@ -110,9 +116,39 @@ class Admin extends CI_Controller
         $data = array(
             'page_title' => 'Send Mail'
         );
-        $this->load->view('header',$data);
-        $this->load->view('Admin/sendMail');
 
+        $this->load->view('header',$data);
+       // $this->load->view('Admin/sendMail');
+
+        //Load email library
+        
+
+//SMTP & mail configuration
+        $config = array(
+            'protocol'  => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'birhannega844',
+            'smtp_pass' => 'usmanhhh2006',
+            'mailtype'  => 'html',
+            'charset'   => 'utf-8'
+        );
+        $this->load->library('email',$config);
+        //$this->email->initialize($config);
+        $this->email->set_mailtype("html");
+        $this->email->set_newline("\r\n");
+
+//Email content
+        $htmlContent = '<h1>Sending email via SMTP server</h1>';
+        $htmlContent .= '<p>This email has sent via SMTP server from CodeIgniter application.</p>';
+
+        $this->email->to('luv2codeit@gmail.com');
+        $this->email->from('luv2codeit@gmail.com','MyWebsite');
+        $this->email->subject('How to send email via SMTP server in CodeIgniter');
+        $this->email->message($htmlContent);
+
+//Send email
+        $this->email->send();
     }
 
    public function logout(){

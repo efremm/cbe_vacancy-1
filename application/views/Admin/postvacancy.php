@@ -5,7 +5,7 @@
             <h2>commmercial bank of Ethiopia vacancy portal</h2> </div>
 
     </div>
-    <div class="col-lg-12" style="margin-top: -20px">
+    <div class="col-lg-12" >
         <?php
         echo $this->session->flashdata("msg");
         ?>

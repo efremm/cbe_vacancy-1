@@ -7,9 +7,9 @@
         <li class="list-group-item" style="border: none"> <a href="<?php echo base_url()?>vacancy/post" id="post">
                 <span class="fa fa-send"></span> Post new vacancy </a> </li>
         <li class="list-group-item" style="border: none"><a href="<?php echo base_url()?>employee/hire" id="hire">
-                <span class="fa fa-user"></span>   Register staff member</a> </li>
+                <span class="fa fa-users"></span>   Register staff member</a> </li>
         <li class="list-group-item" style="border: none"><a href="<?php echo base_url()?>employee/createUser" id="user">
-                <span class="fa fa-user"></span>  Create staff User account</a> </li>
+                <span class="fa fa-user"></span>  User account management</a> </li>
         <li class="list-group-item" style="border: none"><a href="<?php echo base_url()?>Admin/screening" id="screening">
                 <span class="fa fa-1x fa-filter"></span> screen applicants</a> </li>
         <li class="list-group-item" style="border: none"> <a href="<?php echo base_url()?>Admin/sendMail" id="sendMail">
@@ -20,5 +20,7 @@
                 <span class="fa fa-1x fa-print"></span> Dynamic Reports</a> </li>
         <li class="list-group-item" style="border: none"> <a href="<?php echo base_url()?>Admin/logout" id="logout">
                 <span class="fa fa-1x fa-sign-out"></span> Logout</a> </li>
+
+
     </ul>
 </div>

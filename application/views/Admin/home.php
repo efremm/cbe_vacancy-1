@@ -120,7 +120,7 @@ $no=1;
 var element=document.getElementsByTagName('table');
 var select=document.getElementsByTagName('select');
 $(element).dataTable();
-$(select).css('class','form-control');
+
 </script>
 
 

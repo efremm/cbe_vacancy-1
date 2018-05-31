@@ -214,12 +214,25 @@
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="institute">Area of study</label>
-                    <input type="text" name="studyarea" id="area" class="form-control">
+                    <select name="studyarea" id="studyarea" class="form-control">
+                <option value="">choose area of study</option>
+                    <?php
+                    foreach ($categories as $catagory)
+                    {
+                        echo "<option value=".$catagory->Job_catagory_id.">".$catagory->catagory_name."</option>";
+                    }
+                        ?>
+                </select>
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="institute">Academic qualification</label>
-                    <input  name="qualification" id="qualification" class="form-control">
-
+                    <select class="form-control" name="qualification">
+                    <option>diploma</option>
+                        <option>BSC</option>
+                         <option>MSC</option>
+                         <option>PHD</option>
+                         <option>Ass. prof</option>
+                    </select> 
                 </div>
                 <div class="form-group col-lg-6">
                     <label for="institute"> from</label>
@@ -230,8 +243,12 @@
                     <input data-type="date" type="text" name="to" id="to" class="datepicker form-control">
                 </div>
                 <div class="form-group col-lg-6">
+                <label for="position">cumulative GPA</label>
+                <input step="0.01" name="gpa" id="gpa" type="number" class=" form-control">
+            </div>
+                <div class="form-group col-lg-6">
                     &nbsp; <br>
-                    <input type="submit" class="btn btn-primary btn-lg">
+                    <input type="submit" class="btn btn-primary ">
                 </div>
 
                 </form>
@@ -243,6 +260,8 @@
                 echo "<p>institution ".  $eduInfo->Institution."</p>";
                 echo "<p>Study start date ". $eduInfo->start_date."</p>";
                 echo "<p>Study due date ". $eduInfo->end_date."</p>";
+                  echo "<p>cumulative GPA ". $eduInfo->cumulatve_gpa."</p>";
+                
             }
 
         }else {
@@ -256,12 +275,27 @@
             </div>
             <div class="form-group col-lg-6">
                 <label for="institute">Area of study</label>
-                <input type="text" name="studyarea" id="area" class="form-control">
+                 <select name="studyarea" id="studyarea" class="form-control">
+                <option value="">choose area of study</option>
+                    <?php
+                    foreach ($categories as $catagory)
+                    {
+                        echo "<option value=".$catagory->Job_catagory_id.">".$catagory->catagory_name."</option>";
+                    }
+                        ?>
+                </select>
+                
             </div>
             <div class="form-group col-lg-6">
                 <label for="institute">Academic qualification</label>
-                <input  name="qualification" id="qualification" class="form-control">
-
+               
+<select class="form-control" name="qualification">
+<option>diploma</option>
+    <option>BSC</option>
+     <option>MSC</option>
+     <option>PHD</option>
+     <option>Ass. prof</option>
+</select> 
             </div>
             <div class="form-group col-lg-6">
                 <label for="institute"> from</label>
@@ -272,6 +306,10 @@
                 <input data-type="date" type="text" name="to" id="to" class="datepicker form-control">
             </div>
             <div class="form-group col-lg-6">
+                <label for="position">cumulative GPA</label>
+                <input step="0.01" name="gpa" id="gpa" type="number" class=" form-control">
+            </div>
+            <div class="form-group col-lg-6">
        &nbsp; <br>
                 <input type="submit" class="btn btn-primary ">
             </div>
@@ -280,9 +318,10 @@
             <?php
         }
         ?>
-
-
-           <div class="page-header"> work Experience </div>
+<div class="row">
+    <div class="page-header "><strong> work Experience </strong> </div>
+</div>
+           
 
         <?php
         $atrib = array('class' => 'form-group',
@@ -354,6 +393,7 @@
                 <label for="position">to</label>
                 <input name="to" id="to" type="text" class="datepicker form-control">
             </div>
+            
             <div class="form-group col-lg-6">
 
                 <input type="submit" class="btn btn-primary ">

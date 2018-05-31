@@ -27,6 +27,7 @@ function index(){
         'page_title' => 'Applicant-Home'
     );
 
+    $profile_data['regions'] = $this->Region_model->get_regions();
     if(!empty($this->session->userdata('Id')))
     {
         $id=$this->session->userdata('Id');
@@ -395,6 +396,7 @@ if(!empty($userid)){
         $studyarea=$_POST['studyarea'];
         $from=$_POST['from'];
         $to=$_POST['to'];
+        $gpa=$_POST['gpa'];
         $applicantId=$this->session->userdata('Id');
         //arrange for insertion
         $educational_info=array(
@@ -402,7 +404,8 @@ if(!empty($userid)){
             'Institution'=>$institue,
             'department_id'=>$studyarea,
             'start_date'=>$from,
-            'end_date'=>$to
+            'end_date'=>$to,
+            'cumulatve_gpa'=>$gpa
         );
         $userid=$this->session->userdata('Id');
         if(empty($userid)){

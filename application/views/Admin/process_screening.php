@@ -20,12 +20,27 @@
             ?>
 
         </div>
-        <div class="col-lg-9" ">
-        <h3 class="page-header">Screen Applicants for vacancy </h3>
-        <table class="table table-responsive table-striped">
+        <div class="col-lg-9" >
+        <h4 class="page-header">Screening Applicants for vacancy:- <span class="text-success">
+
+                <?php
+                foreach ($vacancydetail as $detail)
+                {
+                    $seat=$detail->number_of_positions;
+                    echo $detail->job_title;
+                    echo "  (vacancy_id: ".$detail->vacancy_id. ")";
+                }
+                ?>
+
+            </span> </h4>
+            <p class="text-warning">
+                <span class="fa fa-exclamation-triangle "></span> Applicants who has empty experience info/educational background info has been left out of candidency
+            </p>
+        <table class="table table-responsive table-condensed" id="tblapplicants">
             <thead>
             <th>Rank</th>
             <th> fUll name of Applicant</th>
+              <th>Gender</th>
             <th>work Experience</th>
             <th>Cumulative GPA</th>
             <th>Action</th>
@@ -35,15 +50,35 @@
             $rank=1;
             foreach ($applicants as $applicant)
             {
+                $startdate=$applicant->start_date;
+                $enddate=$applicant->end_date;
+
+                //
+                $strdate=new DateTime($startdate);
+                $enddate=new DateTime($enddate);
+
+                $diff=date_diff($enddate,$strdate);//OP: +272 days
+
+                $Longexp= $diff->format('%y years %m months %d days ');
+                $exp= $diff->format('%y');
+
+
                 $fullname=$applicant->FirstName." ".$applicant->MiddleName." ".$applicant->LastName;
                 echo  "<tr>
-                    <td>". $applicant->vacancy_id."</td>
+                    <td>". $rank."</td>
                     <td class='text-capitalize'>". $fullname."</td>
-              
-                    <td>". $applicant->vacancy_id."</td>
+                <td>". $applicant->Gender."</td>
+                <td>".$Longexp."</td>
+                 <td>".$applicant->cumulatve_gpa."</td>
+                   <td>
+                       <select class='form-control input-sm '>
+                       <option value=''>select action </option>
+                         <option>select as winner </option>
+                       </select>
+                     </td>
 
                 </tr>";
-
+                $rank++;
             }
 
             ?>
@@ -54,5 +89,10 @@
     </div>
 </div>
 </div>
-
+<link rel="stylesheet" href="<?php echo base_url()?>/resources/DataTable/css/jquery.dataTables.css">
 <script src="<?php echo base_url()?>/resources/js/jquery-1.10.2.js"></script>
+<script src="<?php echo base_url()?>/resources/DataTable/js/jquery.dataTables.js"></script>
+<script type="text/javascript">
+var table=document.getElementsByTagName('table');
+$("#tblapplicants").dataTable();
+</script>

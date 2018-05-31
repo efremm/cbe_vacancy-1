@@ -31,32 +31,46 @@ public function getJobDetails($id){
 }
 public function get_applications(){
     $this->db->select('
-             tbl_applications.Applicant_id,
-                tbl_vacancy.job_title,
-                tbl_vacancy.vacancy_id,
-                   tbl_vacancy.Job_posted,
-                      tbl_vacancy.Due_date,
-              count(tbl_applications.Applicant_id) as totalapplications,
+                 tbl_vacancy.job_title,
+                  tbl_vacancy.vacancy_id,
+                  tbl_vacancy.Job_posted,
+                   tbl_vacancy.number_of_positions,
+                  tbl_vacancy.Due_date,
+                  count(tbl_applications.Applicant_id) as totalapplications
               
           ');
     $this->db->from('tbl_applications');
-    $this->db->join('tbl_vacancy', 'tbl_applications.vacancy_id = tbl_vacancy.vacancy_id');
-    $this->db->where('tbl_vacancy.vacancy_id=tbl_applications.vacancy_id');
-    $this->db->group_by('tbl_vacancy.vacancy_id');
+     $this->db->join('tbl_vacancy', 'tbl_applications.vacancy_id = tbl_vacancy.vacancy_id');
+     $this->db->group_by('tbl_vacancy.vacancy_id');
     $query = $this->db->get();
     return $query->result();
    }
-   public function get_applicants($vacancy_id){
-            $this->db->select('*');
-            $this->db->where('tbl_applications.vacancy_id',$vacancy_id);
-            $this->db->from('tbl_applications');
-            $this->db->join('tbl_applicant', 'tbl_applicant.Applicant_id = tbl_applications.Applicant_id');
 
-            $this->db->group_by('tbl_applications.vacancy_id');
-            $query=$this->db->get();
-       return $query->result();
-   }
+    public function get_applicants($vacancy_id){
+        $this->db->select('
+          tbl_applicant.FirstName,
+          tbl_applicant.LastName,
+          tbl_applicant.MiddleName,
+          tbl_applicant.Gender,
+          tbl_applicant_educational_background.cumulatve_gpa,
+          tbl_work_experience.end_date,
+          tbl_work_experience.start_date,
+          tbl_vacancy.vacancy_id,
+        
+          
+        ');
 
+        $this->db->from('tbl_applications');
+        $this->db->join('tbl_applicant', 'tbl_applicant.Applicant_id = tbl_applications.Applicant_id','inner');
+        $this->db->join('tbl_vacancy', 'tbl_vacancy.vacancy_id=tbl_applications.vacancy_id','inner');
+        $this->db->join('tbl_work_experience', 'tbl_applicant.Applicant_id = tbl_work_experience.Applicant_id','inner');
+
+        $this->db->join('tbl_applicant_educational_background','tbl_applicant.Applicant_id=tbl_applicant_educational_background.Applicant_id','inner');
+        $this->db->where('tbl_applications.vacancy_id',$vacancy_id);
+        $this->db->order_by('tbl_applicant_educational_background.cumulatve_gpa','desc');
+        $query=$this->db->get();
+        return $query->result();
+    }
     function display_jobs()
     {
         $this->db->order_by('Job_posted', 'DESC');
